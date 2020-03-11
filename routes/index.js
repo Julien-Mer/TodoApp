@@ -1,7 +1,5 @@
 // Express //
 var express = require('express');
-var hostname = 'todoapp-m4104.herokuapp.com';
-var port = 4015;
 var app = express(); // Utilisation d’un routeur Express pour traiter les URL
 
 // Body Parser //
@@ -23,6 +21,8 @@ var tasks = mongoose.model('le-forestier_merieau', tasksSchema);
 
 var router = require('./routes.js')(express, tasks);
 app.use(router);  // Démarrage du serveur
-app.listen(port, hostname, function(){
-    console.log("Le serveur est accessible à l’URL http://"+ hostname +":"+port);
+
+app.set('port', process.env.PORT || 3000);
+app.listen(app.get('port'), function(){
+    console.log("Le serveur écoute sur le port "+app.get('port'));
 });

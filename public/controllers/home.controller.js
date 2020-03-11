@@ -1,6 +1,7 @@
 (function () {
     'use strict';
 
+
     angular
         .module('todoApp')
         .filter('filterDesc', ['$sce', function($sce){
@@ -36,14 +37,13 @@
         })
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$location'];
+    HomeController.$inject = ['$rootScope', '$location', '$http'];
 
-    function HomeController($scope, $location) {
+
+    function HomeController($scope, $location, $http) {
         $scope.searchCategory = "title";
         $scope.searchText = "";
-        var tasks = JSON.parse(window.localStorage.getItem("tasks"));
-        if (tasks == null) tasks = [];
-        $scope.todos = tasks;
+        $scope.todos = [];
 
         $scope.$watch('todos', function () {
             if ($scope.todos.length > 0)
@@ -56,49 +56,55 @@
             return item[$scope.searchCategory].toLowerCase().includes($scope.searchText.toLowerCase());
         };
 
-        $scope.removeTask = function (index) {
-            $scope.todos.splice(index, 1);
-            $scope.todos.forEach(
-                function (item, index) {
-                    item.id = index;
-                }
-            );
-            window.localStorage.setItem("tasks", JSON.stringify($scope.todos));
-            $scope.$apply();
+        $scope.refreshTodos = function() {
+            $http.get('http://localhost:3000/tasks').then(function(res) {
+                $scope.todos = res.data;
+            }, function(res) { });
+        };
+        $scope.refreshTodos();
+
+        $scope.removeTask = function (idTodo) {
+            $http.delete('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+                $scope.refreshTodos();
+                $scope.$apply();
+            }, function(res) { });
         };
 
-        $scope.editTask = function (index) {
-            $scope.currentTodo = $scope.todos[index];
-            $location.path('/edit');
-            $scope.$apply();
+        $scope.editTask = function (idTodo) {
+            $http.get('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+                $scope.currentTodo = res.data;
+                $location.path('/edit');
+            }, function(res) { });
         };
 
         $scope.addTask = function () {
             $location.path('/add');
         };
 
-        $scope.openShowModal = function (index) {
-            $scope.currentTodo = $scope.todos[index];
-            let modal = document.getElementById("showModal");
-            modal.style.display = "block";
+        $scope.openShowModal = function (idTodo) {
+            $http.get('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+                $scope.currentTodo = res.data;
+                let modal = document.getElementById("showModal");
+                modal.style.display = "block";
 
-            let deleteBtn = document.getElementById("delete");
-            deleteBtn.onclick = function () {
-                modal.style.display = "none";
-                $scope.removeTask(index);
-            };
-            let modifyBtn = document.getElementById("modify");
-            modifyBtn.onclick = function () {
-                modal.style.display = "none";
-                $scope.editTask(index);
-            };
-
-            let modalContainer = document.getElementById("showModal-container");
-            window.onclick = function (event) { // Pour fermer la modal si l'utilisateur clique ailleurs
-                if (event.target === modal || event.target === modalContainer) {
+                let deleteBtn = document.getElementById("delete");
+                deleteBtn.onclick = function () {
                     modal.style.display = "none";
-                }
-            }
+                    $scope.removeTask(idTodo);
+                };
+                let modifyBtn = document.getElementById("modify");
+                modifyBtn.onclick = function () {
+                    modal.style.display = "none";
+                    $scope.editTask(idTodo);
+                };
+
+                let modalContainer = document.getElementById("showModal-container");
+                window.onclick = function (event) { // Pour fermer la modal si l'utilisateur clique ailleurs
+                    if (event.target === modal || event.target === modalContainer) {
+                        modal.style.display = "none";
+                    }
+                };
+            }, function(res) { });
         };
     }
 

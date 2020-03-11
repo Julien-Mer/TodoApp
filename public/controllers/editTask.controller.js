@@ -5,20 +5,17 @@
         .module('todoApp')
         .controller('EditTaskController', EditTaskController);
 
-    EditTaskController.$inject = ['$rootScope', '$location'];
+    EditTaskController.$inject = ['$rootScope', '$location', '$http'];
 
-    function EditTaskController($scope, $location) {
-        var tasks = JSON.parse(window.localStorage.getItem("tasks"));
-        if (tasks == null) tasks = [];
-        $scope.todos = tasks;
+    function EditTaskController($scope, $location, $http) {
         if($scope.currentTodo == null)
             $location.path('/home');
 
+        var idTodo = $scope.currentTodo._id;
         $scope.editTask = function() {
-            $scope.todos[$scope.currentTodo.id-1] = $scope.currentTodo;
-            window.localStorage.setItem("tasks", JSON.stringify($scope.todos));
-            $location.path('/home');
-            $scope.$apply();
+            $http.put('http://localhost:3000/tasks/' + idTodo, $scope.currentTodo).then(function(res) {
+                $scope.refreshTodos();
+            }, function(res) { });
         };
 
         $scope.back = function () {

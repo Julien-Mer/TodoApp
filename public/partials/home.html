@@ -15,7 +15,7 @@
     <section id="main" class="align-self-start w-100 mb-2">
       <div id="todo-list">
         <div id="taskList" ng-repeat="todo in todos | filter:filterTasks:strict track by $index" ng-class="{title : todo.title, data : todo.date}" >
-          <div class="task p-2 {{todo | filterExpiration}}" ng-click="openShowModal($index)">
+          <div class="task p-2 {{todo | filterExpiration}}" ng-click="openShowModal(todo._id)">
             <h5 class="my-0">{{todo.title}}</h5>
             <p class="my-0 text-muted"><small>{{todo.date}}</small></p>
           </div>
@@ -32,7 +32,7 @@
           <div class="mb-4">
             <h3><strong>{{currentTodo.title}}</strong></h3>
             <p ng-bind-html="currentTodo.description | filterDesc"></p>
-            <p class="m-0 text-muted" ng-model="">Catégorie : {{currentTodo.category}} </p>
+            <p class="m-0 text-muted">Catégorie : {{currentTodo.category}} </p>
             <p class="m-0 text-muted">Date : {{currentTodo.date}} </p>
             <p class="m-0 text-muted">Durée : {{currentTodo.time}} </p>
           </div>

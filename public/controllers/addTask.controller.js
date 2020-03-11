@@ -5,19 +5,16 @@
         .module('todoApp')
         .controller('AddTaskController', AddTaskController);
 
-    AddTaskController.$inject = ['$rootScope', '$location'];
+    AddTaskController.$inject = ['$rootScope', '$location', '$http'];
 
-    function AddTaskController($scope, $location) {
-        var tasks = JSON.parse(window.localStorage.getItem("tasks"));
-        if (tasks == null) tasks = [];
-        $scope.todos = tasks;
+    function AddTaskController($scope, $location, $http) {
         var newTodo = {};
         newTodo.title = newTodo.category = newTodo.description = newTodo.date = newTodo.time = "";
         $scope.newTodo = newTodo;
         $scope.addTask = function () {
-            newTodo.id = $scope.todos.length + 1;
-            $scope.todos.push(newTodo);
-            window.localStorage.setItem("tasks", JSON.stringify($scope.todos));
+            $http.post('http://localhost:3000/tasks/', newTodo).then(function(res) {
+                $scope.refreshTodos();
+            }, function(res) { });
         };
 
         $scope.back = function () {

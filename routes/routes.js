@@ -3,6 +3,7 @@ module.exports = function (express, tasks) {
     router.route('/') // Redirection sur la partie Front
             .get(function(req, res) {
                 res.sendfile('/public/index.html', { root: __dirname + '/..' })
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             });
 
     router.route('/tasks') // Implantation des méthodes GET, PUT, UPDATE et DELETE
@@ -16,6 +17,7 @@ module.exports = function (express, tasks) {
                     res.json(resTask);
                 }
             });
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         })
         .post(function(req,res) {
             var newTask = new tasks();
@@ -33,6 +35,7 @@ module.exports = function (express, tasks) {
                     res.json({message: 'Tâche ajoutéé.'});
                 }
             });
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         });
 
     router.route('/tasks/:task_id')
@@ -46,6 +49,7 @@ module.exports = function (express, tasks) {
                     res.json(resTask);
                 }
             });
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         })
         .put(function(req,res) {
             tasks.findById(req.params.task_id, function(err, resTask) {
@@ -69,6 +73,7 @@ module.exports = function (express, tasks) {
                     });
                 }
             });
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         })
         .delete(function(req,res) {
             tasks.remove({_id: req.params.task_id}, function(err, resTask) {
@@ -80,6 +85,7 @@ module.exports = function (express, tasks) {
                     res.json({message:"Tâche supprimée."});
                 }
             });
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         });
         return router;
 };

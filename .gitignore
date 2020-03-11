@@ -1,0 +1,5 @@
+node_modules/
+.idea/
+public/node_modules/
+todoApp/
+package-lock.json

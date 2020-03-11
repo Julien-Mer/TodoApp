@@ -1,6 +1,6 @@
 // Express //
 var express = require('express');
-var hostname = 'localhost';
+var hostname = 'todoapp-m4104.herokuapp.com';
 var port = 4015;
 var app = express(); // Utilisation d’un routeur Express pour traiter les URL
 

@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "cd public && npm install && node ../routes/index.js",
+    "start": "cd public ; npm install ; cd .. ; node routes/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erwan LE FORESTIER & Julien MERIEAU",

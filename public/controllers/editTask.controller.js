@@ -13,7 +13,7 @@
 
         var idTodo = $scope.currentTodo._id;
         $scope.editTask = function() {
-            $http.put('http://localhost:3000/tasks/' + idTodo, $scope.currentTodo).then(function(res) {
+            $http.put('https://todoapp-m4104.herokuapp.com/tasks/' + idTodo, $scope.currentTodo).then(function(res) {
                 $scope.refreshTodos();
             }, function(res) { });
         };

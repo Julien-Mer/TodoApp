@@ -57,21 +57,21 @@
         };
 
         $scope.refreshTodos = function() {
-            $http.get('http://localhost:3000/tasks').then(function(res) {
+            $http.get('https://todoapp-m4104.herokuapp.com/tasks').then(function(res) {
                 $scope.todos = res.data;
             }, function(res) { });
         };
         $scope.refreshTodos();
 
         $scope.removeTask = function (idTodo) {
-            $http.delete('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+            $http.delete('https://todoapp-m4104.herokuapp.com/tasks/' + idTodo).then(function(res) {
                 $scope.refreshTodos();
                 $scope.$apply();
             }, function(res) { });
         };
 
         $scope.editTask = function (idTodo) {
-            $http.get('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+            $http.get('https://todoapp-m4104.herokuapp.com/tasks/' + idTodo).then(function(res) {
                 $scope.currentTodo = res.data;
                 $location.path('/edit');
             }, function(res) { });
@@ -82,7 +82,7 @@
         };
 
         $scope.openShowModal = function (idTodo) {
-            $http.get('http://localhost:3000/tasks/' + idTodo).then(function(res) {
+            $http.get('https://todoapp-m4104.herokuapp.com/tasks/' + idTodo).then(function(res) {
                 $scope.currentTodo = res.data;
                 let modal = document.getElementById("showModal");
                 modal.style.display = "block";

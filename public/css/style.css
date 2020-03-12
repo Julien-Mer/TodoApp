@@ -42,6 +42,14 @@ body {
  color:white;
 }
 
+.spinnerLoading.loading {
+ display: none !important;
+}
+
+.taskLoading.loading {
+ display: block !important;
+}
+
 .btn-circle {
  width: 3rem;
  height: 3rem;

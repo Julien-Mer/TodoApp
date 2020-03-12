@@ -43,6 +43,7 @@
     function HomeController($scope, $location, $http) {
         $scope.searchCategory = "title";
         $scope.searchText = "";
+        $scope.taskLoading = "";
         $scope.todos = [];
 
         $scope.$watch('todos', function () {
@@ -57,7 +58,9 @@
         };
 
         $scope.refreshTodos = function() {
+            $scope.taskLoading = "";
             $http.get('https://todoapp-m4104.herokuapp.com/tasks').then(function(res) {
+                $scope.taskLoading = "loading";
                 $scope.todos = res.data;
             }, function(res) { });
         };
